@@ -4,10 +4,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
@@ -24,11 +26,12 @@ public class DynamicDataSourceConfig {
 
     //创建一个数据源
     @Bean(name = "dynamicDataSource")
-    public DataSource dynamicDataSource(){
+    @Primary
+    public DataSource dynamicDataSource(@Autowired DataSourceFactory dataSourceFactory){
         //创建多个数据源,要有一个默认的数据,如果没有获取到登录信息，则可以认为是默认数据源
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.addTargetDataSources(DataSourceFactory.buildTargetDataSources());//设置其他目标数据
-        dynamicDataSource.setDefaultTargetDataSource(DataSourceFactory.buildDefault());//设置默认数据
+        dynamicDataSource.addTargetDataSources(dataSourceFactory.buildTargetDataSources());//设置其他目标数据
+        dynamicDataSource.setDefaultTargetDataSource(dataSourceFactory.buildDefault());//设置默认数据
 
         return dynamicDataSource;
     }

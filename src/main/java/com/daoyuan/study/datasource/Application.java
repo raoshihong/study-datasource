@@ -1,5 +1,6 @@
 package com.daoyuan.study.datasource;
 
+import com.daoyuan.study.datasource.listener.ApplicationStartListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Application{
 
     public static void main(String[] args){
+//        SpringApplication springApplication = new SpringApplication(Application.class);
+//        springApplication.addListeners(new ApplicationStartListener());
+//        springApplication.run(args);
         SpringApplication.run(Application.class,args);
     }
 

@@ -34,7 +34,7 @@ public class ChannelsService {
 //        channelsMapper.insert(channels);
 //    }
 
-    @NeedDataSource(alias = "db1")
+//    @NeedDataSource(alias = "db1")
     @Transactional
     public void saveA(){
         //使用默认的数据源
@@ -46,7 +46,7 @@ public class ChannelsService {
 //        int i=10/0;
     }
 
-    @NeedDataSource(alias = "db2")
+//    @NeedDataSource(alias = "db2")
     @Transactional
     public void saveB(){
         Channels channels = new Channels();
@@ -58,7 +58,7 @@ public class ChannelsService {
 //        int i=10/0;
     }
 
-    @NeedDataSource(alias = "db3")
+//    @NeedDataSource(alias = "db3")
     @Transactional
     public void saveC(){
         Channels channels = new Channels();
