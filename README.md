@@ -285,8 +285,8 @@ org.apache.ibatis.executor.SimpleExecutor.prepareStatement
 
 
 
-
-既然在同一个@Transaction方法中无法进行多数据源的切换,那么如何解决这个问题呢？
+从上面我们可以知道，@Transaction开启后，同一个方法中只会有第一个数据源的connection
+既然在同一个@Transaction方法中无法进行多数据源的切换,那么如何解决这个问题呢？解决方法就是将多个操作分开，并在开启事物前就设置各自的数据源
 
 方法一：
     分布式事物  （暂不考虑）
@@ -296,7 +296,8 @@ org.apache.ibatis.executor.SimpleExecutor.prepareStatement
     
 方法三：
     将多个数据源的操作分开到不同方法中
-    比如：但是下面这个事物回滚问题（不过也不用考虑太多，一般很少同时更新两个数据源的操作）
+    比如：
+        通过在事物开启前
             
             这个方法在controller中
             @GetMapping("/save")
