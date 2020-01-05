@@ -4,43 +4,36 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties({MybatisProperties.class})//开启Mybatis配置属性
 @MapperScan("com.daoyuan.study.datasource.mapper")
-public class DataSourceConfig {
+public class DynamicDataSourceConfig {
 
     private MybatisProperties mybatisProperties;
 
-    public DataSourceConfig(MybatisProperties mybatisProperties) {//自动注入MybatisProperties相关属性
+    public DynamicDataSourceConfig(MybatisProperties mybatisProperties) {//自动注入MybatisProperties相关属性
         this.mybatisProperties = mybatisProperties;
     }
 
+    //创建一个数据源
     @Bean(name = "dynamicDataSource")
-    public DataSource dynamicDataSource(@Autowired DataSourceFactory dataSourceFactory){
-        //创建多个数据源
-        DataSource dbs = dataSourceFactory.build("default");
-        DataSource dbs1 = dataSourceFactory.build("dbs1");
-        Map<Object,Object> targetDataSourceMap = new HashMap<Object, Object>();
-        targetDataSourceMap.put("default",dbs);
-        targetDataSourceMap.put("dbs1",dbs1);
-
+    public DataSource dynamicDataSource(){
+        //创建多个数据源,要有一个默认的数据,如果没有获取到登录信息，则可以认为是默认数据源
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.addTargetDataSources(targetDataSourceMap);
-        dynamicDataSource.setDefaultTargetDataSource(dbs);
+        dynamicDataSource.addTargetDataSources(DataSourceFactory.buildTargetDataSources());//设置其他目标数据
+        dynamicDataSource.setDefaultTargetDataSource(DataSourceFactory.buildDefault());//设置默认数据
 
         return dynamicDataSource;
     }
 
+    //将数据源注入到sqlSessionFactory中
     @Bean(name = "sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(@Qualifier("dynamicDataSource") DataSource dataSource) throws Exception{
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();

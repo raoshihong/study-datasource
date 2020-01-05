@@ -16,16 +16,18 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     private Map<Object,Object> dataSources = new HashMap<Object, Object>();
 
     /**
-     * 添加targetDataSources
+     * 增量添加添加用户自定义的数据源
      * @param targetDataSources
      */
     public void addTargetDataSources(Map<Object, Object> targetDataSources) {
         dataSources.putAll(targetDataSources);
         this.setTargetDataSources(dataSources);
+        //这个方法必须调用,才能让spring知道数据源有变更
         this.afterPropertiesSet();//需要更新resolvedDataSources或者resolvedDefaultDataSource
     }
 
     /**
+     * 返回用户自定义的数据源
      *  这个方法的调用流程
      *  AbstractRoutingDataSource.getConnection() -> determineTargetDataSource() -> determineCurrentLookupKey()
      *  所以在获取连接时返回所需要的数据源
@@ -34,7 +36,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         //每次都从当前线程中获取对应的数据源对象
-        return DataSourceContextHolder.getDbType();
+        return DataSourceContextHolder.getDBAlias();
     }
 
 }
