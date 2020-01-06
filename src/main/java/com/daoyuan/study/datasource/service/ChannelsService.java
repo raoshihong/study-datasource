@@ -1,12 +1,9 @@
 package com.daoyuan.study.datasource.service;
 
-import com.daoyuan.study.datasource.annotation.NeedDataSource;
-import com.daoyuan.study.datasource.dbs.DataSourceContextHolder;
 import com.daoyuan.study.datasource.entity.Channels;
 import com.daoyuan.study.datasource.mapper.ChannelsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service

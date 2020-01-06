@@ -3,6 +3,7 @@ package com.daoyuan.study.datasource.controller;
 import com.daoyuan.study.datasource.dbs.DataSourceContextHolder;
 import com.daoyuan.study.datasource.dbs.DataSourceFactory;
 import com.daoyuan.study.datasource.dbs.DynamicDataSource;
+import com.daoyuan.study.datasource.mapper.DataSourceConfigMapper;
 import com.daoyuan.study.datasource.service.ChannelsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,9 @@ public class ChannelsController {
     @Autowired
     private DataSourceFactory dataSourceFactory;
 
+    @Autowired
+    private DataSourceConfigMapper dataSourceConfigMapper;
+
     @GetMapping("/save")
     public void save(){
         try {
@@ -31,6 +35,9 @@ public class ChannelsController {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        Map<Object,Object> targetDataSources = dataSourceFactory.buildTargetDataSources(dataSourceConfigMapper.selectList());
+        dynamicDataSource.addTargetDataSources(targetDataSources);
         try {
             DataSourceContextHolder.setDBAlais("db2");
             channelsService.saveB();
@@ -43,9 +50,9 @@ public class ChannelsController {
             String username = "root";
             String password = "123456";
             String driverClass = "org.gjt.mm.mysql.Driver";
-            DataSource dataSource = dataSourceFactory.buidDataSource(url,username,password,driverClass);
+            DataSource dataSource = dataSourceFactory.buildTargetDataSource(url,username,password,driverClass);
 
-            Map<Object,Object> targetDataSources = new HashMap<>();
+            targetDataSources = new HashMap<>();
             targetDataSources.put("db3",dataSource);
             dynamicDataSource.addTargetDataSources(targetDataSources);
             DataSourceContextHolder.setDBAlais("db3");

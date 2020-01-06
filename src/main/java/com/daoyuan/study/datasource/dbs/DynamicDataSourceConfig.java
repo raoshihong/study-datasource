@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties({MybatisProperties.class})//开启Mybatis配置属性
@@ -25,13 +27,16 @@ public class DynamicDataSourceConfig {
     }
 
     //创建一个数据源
-    @Bean(name = "dynamicDataSource")
     @Primary
+    @Bean(name = "dynamicDataSource")
     public DataSource dynamicDataSource(@Autowired DataSourceFactory dataSourceFactory){
         //创建多个数据源,要有一个默认的数据,如果没有获取到登录信息，则可以认为是默认数据源
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.addTargetDataSources(dataSourceFactory.buildTargetDataSources());//设置其他目标数据
-        dynamicDataSource.setDefaultTargetDataSource(dataSourceFactory.buildDefault());//设置默认数据
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        DataSource defaultDataSource = dataSourceFactory.buildDefaultDataSource();
+        targetDataSources.put("db1",defaultDataSource);
+        dynamicDataSource.addTargetDataSources(targetDataSources);//设置其他目标数据
+        dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);//设置默认数据
 
         return dynamicDataSource;
     }

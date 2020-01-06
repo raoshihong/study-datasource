@@ -2,7 +2,7 @@
 2.采用AOP代理目标方法，在目标方法结束后清除当前线程的数据源
 
 
-CREATE TABLE `datasource_config` (
+CREATE TABLE `data_source_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `alias` varchar(100) NOT NULL,
   `db_type` varchar(100) NOT NULL,
