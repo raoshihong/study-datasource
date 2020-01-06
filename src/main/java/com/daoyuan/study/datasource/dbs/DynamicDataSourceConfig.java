@@ -2,7 +2,6 @@ package com.daoyuan.study.datasource.dbs;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.MybatisProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +16,6 @@ import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties({MybatisProperties.class})//开启Mybatis配置属性
-@MapperScan("com.daoyuan.study.datasource.mapper")
 public class DynamicDataSourceConfig {
 
     private MybatisProperties mybatisProperties;
