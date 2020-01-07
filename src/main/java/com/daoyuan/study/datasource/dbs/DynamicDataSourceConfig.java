@@ -27,7 +27,7 @@ public class DynamicDataSourceConfig {
     //创建一个数据源
     @Primary
     @Bean(name = "dynamicDataSource")
-    public DataSource dynamicDataSource(@Autowired DataSourceFactory dataSourceFactory){
+    public DataSource dynamicDataSource(@Autowired DynamicDataSourceFactory dataSourceFactory){
         //创建多个数据源,要有一个默认的数据,如果没有获取到登录信息，则可以认为是默认数据源
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         Map<Object, Object> targetDataSources = new HashMap<>();

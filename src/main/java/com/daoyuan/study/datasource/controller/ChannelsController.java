@@ -1,7 +1,7 @@
 package com.daoyuan.study.datasource.controller;
 
 import com.daoyuan.study.datasource.dbs.DataSourceContextHolder;
-import com.daoyuan.study.datasource.dbs.DataSourceFactory;
+import com.daoyuan.study.datasource.dbs.DynamicDataSourceFactory;
 import com.daoyuan.study.datasource.dbs.DynamicDataSource;
 import com.daoyuan.study.datasource.mapper.DataSourceConfigMapper;
 import com.daoyuan.study.datasource.service.ChannelsService;
@@ -23,7 +23,7 @@ public class ChannelsController {
     private DynamicDataSource dynamicDataSource;
 
     @Autowired
-    private DataSourceFactory dataSourceFactory;
+    private DynamicDataSourceFactory dataSourceFactory;
 
     @Autowired
     private DataSourceConfigMapper dataSourceConfigMapper;

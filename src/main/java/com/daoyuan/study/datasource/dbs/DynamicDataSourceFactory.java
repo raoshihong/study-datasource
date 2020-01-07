@@ -14,10 +14,12 @@ import java.util.Map;
 import java.util.Properties;
 
 @Component
-public class DataSourceFactory {
+public class DynamicDataSourceFactory {
 
     @Autowired
     private AbstractEnvironment environment;
+
+    private Map<String,String> appCodeAliasMappings = new HashMap<>();
 
     public DataSource buildDefaultDataSource(){
         DruidDataSource druidDataSource = new DruidDataSource();
@@ -37,6 +39,7 @@ public class DataSourceFactory {
             DataSource dataSource = buildTargetDataSource(url,username,password,driverClassName);
 
             targetDataSourceMap.put(dataSourceConfig.getAlias(),dataSource);
+            appCodeAliasMappings.put(dataSourceConfig.getAppCode(),dataSourceConfig.getAlias());
         });
 
         return targetDataSourceMap;
@@ -68,4 +71,9 @@ public class DataSourceFactory {
 
         return druidDataSource;
     }
+
+    public Map<String, String> getAppCodeAliasMapping() {
+        return appCodeAliasMappings;
+    }
+
 }
