@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * @author raoshihong
+ * @date 8/6/22 12:14 AM
+ */
 @Data
-@TableName("channels")
-public class Channels {
+@TableName("category")
+public class Category {
+
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
+
     private String name;
 }
